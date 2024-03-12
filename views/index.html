@@ -5,10 +5,24 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title></title>
     <link href="css/style.css" rel="stylesheet">
+    <script src="https://cdn.tailwindcss.com"></script>
   </head>
-  <body>
-    <h1>{{ .Height }}</h1>
-    <h1>{{ .Hash }}</h1>
-    <h1>{{ .Timestamp }}</h1>
+  <body class="mx-auto my-auto mt-8 md:mt-48 items-center max-w-5xl">
+   <div class="">
+   <div class="mt-8">
+    <h1 class="text-2xl">Block Height: </h1>
+    <p class="font-light text-xl">{{ .Height }}</p>
+   </div> 
+
+   <div class="mt-8">
+    <h1 class="text-2xl">Block Hash: </h1>
+    <p class="font-light text-xl">{{ .Hash }}</p>
+   </div> 
+
+   <div class="mt-8">
+    <h1 class="text-2xl">Block Timestamp: </h1>
+    <p class="font-light text-xl">{{ .Timestamp }}</p>
+   </div> 
+   </div> 
   </body>
 </html> 
