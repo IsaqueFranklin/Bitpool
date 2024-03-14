@@ -1,0 +1,48 @@
+ <!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title></title>
+    <link href="css/style.css" rel="stylesheet">
+    <script src="https://cdn.tailwindcss.com"></script>
+  </head>
+  <body class="mx-auto my-auto mt-8 md:mt-12 items-center max-w-5xl">
+   <div class="">
+     <div>
+      <h1>Information about an specific block</h1>
+        <form hx-post="/get-block/" hx-target="#block" hx-swap="beforeend" htmx-indicator="#spinner">
+    
+           <div class="">
+             <h1 class="text-4xl font-normal">Specific Block Information:</h1>
+            <input placeholder="What's the block?" type="text" name="block" class="py-2 px-3 mt-2 bg-gray-100 border border-gray-700 rounded-md" id="title" />
+          <button type="submit" class="py-2 px-3 bg-gray-700 text-white rounded-md mt-4 hover:bg-black">
+            <span class="spinner-border spinner-border-sm htmx-indicator" id="spinner" role="status" aria-hidden="true"></span>
+            Get block now
+          </button>
+
+           </div> 
+        </form>
+     </div>
+     {{ block "get-block" .}}
+<div class="" id="block">
+       <div class="mt-8">
+    <h1 class="text-2xl">Block Height: </h1>
+    <p class="font-light text-xl">{{ .Height }}</p>
+   </div> 
+
+   <div class="mt-8">
+    <h1 class="text-2xl">Block Hash: </h1>
+    <p class="font-light text-xl">{{ .Hash }}</p>
+   </div> 
+
+   <div class="mt-8">
+    <h1 class="text-2xl">Block Timestamp: </h1>
+    <p class="font-light text-xl">{{ .Timestamp }}</p>
+   </div> 
+
+    </div>
+     {{end}}
+   </div> 
+  </body>
+</html>

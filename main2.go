@@ -3,14 +3,17 @@ import (
   "fmt"
   "html/template"
   "time"
+  "encoding/json"
+  "io/ioutil"
   //"io"
   "log"
   "net/http"
 )
 
-type Film struct {
-  Title       string
-  Director    string
+type Response struct {
+  Height int `json:"height"`
+  Hash string `json:"hash"`
+  Timestamp string `json:"timestamp"`
 }
 
 func main(){
@@ -19,31 +22,41 @@ func main(){
   h1 := func(w http.ResponseWriter, r *http.Request){
     tmpl := template.Must(template.ParseFiles("index.html"))
 
-    films := map[string][]Film{
-     "Films": {
-				{Title: "The Godfather", Director: "Francis Ford Coppola"},
-				{Title: "Blade Runner", Director: "Ridley Scott"},
-				{Title: "The Thing", Director: "John Carpenter"},
-			},    
-    }
-    tmpl.Execute(w, films)
+    tmpl.Execute(w, nil)
   }  
 
   h2 := func (w http.ResponseWriter, r *http.Request) {
     time.Sleep(1 * time.Second)
-    title := r.PostFormValue("title") 
-    director := r.PostFormValue("director")
+    
+    //block := r.PostFormValue("block") 
+    resp, err := http.Get("https://mempool.space/api/v1/mining/blocks/timestamp/1")
+    
+    if err != nil {
+      log.Fatalln(err)
+    }
+
+    body, err := ioutil.ReadAll(resp.Body)
+    if err != nil {
+      log.Fatalln(err)
+    }
+
+    var result Response
+
+    if err := json.Unmarshal(body, &result); err != nil {
+      fmt.Println("Can not unmarshal JSON.")
+    }
+
     //htmlStr := fmt.Sprintf("<div class='border border-gray-700 rounded-xl p-4 mt-4'><p>%s - %s</p></div>", title, director)
     //tmpl, _ := template.New("t").Parse(htmlStr)
     //tmpl.Execute(w, nil)
 
     tmpl := template.Must(template.ParseFiles("index.html"))
 
-    tmpl.ExecuteTemplate(w, "film-list-element", Film{Title: title, Director: director})
+    tmpl.ExecuteTemplate(w, "get-block", Response{Height: result.Height, Hash: result.Hash, Timestamp: result.Timestamp})
   }
 
 
   http.HandleFunc("/", h1)
-  http.HandleFunc("/add-film/", h2)
-  log.Fatal(http.ListenAndServe(":8000", nil))
+  http.HandleFunc("/get-block/", h2)
+  log.Fatal(http.ListenAndServe(":8080", nil))
 }
