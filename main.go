@@ -6,6 +6,7 @@ import (
   "io/ioutil"
   "log"
   "net/http"
+  "time"
   "github.com/gofiber/template/html/v2"
   "github.com/gofiber/fiber/v2"
 )
@@ -25,8 +26,20 @@ func main() {
     Compress: true,
   })
 
-  app.Get("/", func(c *fiber.Ctx) error {
-    resp, err := http.Get("https://mempool.space/api/v1/mining/blocks/timestamp/1672531200")
+app.Get("/", func(c *fiber.Ctx) error {
+   
+
+    return c.Render("index", fiber.Map{})
+  })
+
+
+  app.Post("/get-block/", func(c *fiber.Ctx) error {
+    time.Sleep(1 *time.Second)
+    block := c.FormValue("Block")
+
+    fmt.Println(block)
+
+    resp, err := http.Get("https://mempool.space/api/v1/mining/blocks/timestamp/"+block)
 
     if err != nil {
       log.Fatalln(err)
@@ -45,6 +58,10 @@ func main() {
 
     fmt.Println(result)
 
+    if err := c.BodyParser(&result); err != nil {
+      return err
+    }
+    
     return c.Render("index", fiber.Map{
       "Height": result.Height,
       "Hash": result.Hash,
