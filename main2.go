@@ -1,13 +1,14 @@
- package main
+package main
+
 import (
-  "fmt"
-  "html/template"
-  "time"
   "encoding/json"
+  "fmt"
   "io/ioutil"
-  //"io"
   "log"
   "net/http"
+  "time"
+  "github.com/gofiber/template/html/v2"
+  "github.com/gofiber/fiber/v2"
 )
 
 type Response struct {
@@ -16,21 +17,24 @@ type Response struct {
   Timestamp string `json:"timestamp"`
 }
 
-func main(){
-  fmt.Println("Hello.")
-  
-  h1 := func(w http.ResponseWriter, r *http.Request){
-    tmpl := template.Must(template.ParseFiles("index.html"))
+func main() {
 
-    tmpl.Execute(w, nil)
-  }  
+  app := fiber.New(fiber.Config{
+    Views: html.New("./views", ".html"),
+  })
 
-  h2 := func (w http.ResponseWriter, r *http.Request) {
-    time.Sleep(1 * time.Second)
-    
-    //block := r.PostFormValue("block") 
-    resp, err := http.Get("https://mempool.space/api/v1/mining/blocks/timestamp/1")
-    
+  app.Static("/", "./public", fiber.Static{
+    Compress: true,
+  }) 
+
+  app.Get("/", func(ctx *fiber.Ctx) error {
+    return ctx.SendString("Hello World.")
+  })
+
+  app.Get("/block", func(ctx *fiber.Ctx) error { 
+
+    resp, err := http.Get("https://mempool.space/api/v1/mining/blocks/timestamp/1672531200")
+
     if err != nil {
       log.Fatalln(err)
     }
@@ -46,17 +50,47 @@ func main(){
       fmt.Println("Can not unmarshal JSON.")
     }
 
-    //htmlStr := fmt.Sprintf("<div class='border border-gray-700 rounded-xl p-4 mt-4'><p>%s - %s</p></div>", title, director)
-    //tmpl, _ := template.New("t").Parse(htmlStr)
-    //tmpl.Execute(w, nil)
+    fmt.Println(result) 
+    
+    return ctx.Render("index", fiber.Map{
+      "Height": result.Height,
+      "Hash": result.Hash,
+      "Timestamp": result.Timestamp,
+    })
+  })
 
-    tmpl := template.Must(template.ParseFiles("index.html"))
+ app.Post("/get-block", func(ctx *fiber.Ctx) error {
+    
+    time.Sleep(1 *time.Second)
+    block := ctx.FormValue("block")
 
-    tmpl.ExecuteTemplate(w, "get-block", Response{Height: result.Height, Hash: result.Hash, Timestamp: result.Timestamp})
-  }
+    fmt.Println(block)
 
+    resp, err := http.Get("https://mempool.space/api/v1/mining/blocks/timestamp/"+block)
 
-  http.HandleFunc("/", h1)
-  http.HandleFunc("/get-block/", h2)
-  log.Fatal(http.ListenAndServe(":8080", nil))
+    if err != nil {
+      log.Fatalln(err)
+    }
+
+    body, err := ioutil.ReadAll(resp.Body)
+    if err != nil {
+      log.Fatalln(err)
+    }
+
+    var result Response
+
+    if err := json.Unmarshal(body, &result); err != nil {
+      fmt.Println("Can not unmarshal JSON.")
+    }
+
+    fmt.Println(result) 
+    
+    return ctx.Render("index", fiber.Map{
+      "Height": result.Height,
+      "Hash": result.Hash,
+      "Timestamp": result.Timestamp,
+    })
+ }) 
+
+  log.Fatal(app.Listen(":9000"))
 }
