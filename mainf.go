@@ -40,7 +40,22 @@ func main() {
   app.Post("/block", func (c *fiber.Ctx) error {
 
     newBlock := new(Binfo)	
-		newBlock.Block = c.FormValue("block") 
+    newBlock.Block = c.FormValue("block") 
+    
+		return c.Redirect("/block/"+newBlock.Block)
+
+	  /*return c.Render("todo/create", fiber.Map{
+		  "Page":          "Create Todo",
+		  "FromProtected": fromProtected,
+		  "UserID":        c.Locals("userId").(uint64),
+		  "Username":      c.Locals("username").(string),
+	  })*/
+  })
+
+  app.Get("/block/:block", func(c *fiber.Ctx) error {
+   
+    newBlock := new(Binfo)
+    newBlock.Block = c.Params("block")
     resp, err := http.Get("https://mempool.space/api/v1/mining/blocks/timestamp/"+newBlock.Block)
 
       if err != nil {
@@ -65,13 +80,7 @@ func main() {
         "Hash": result.Hash,
         "Timestamp": result.Timestamp,
       })
-		  //return c.Redirect("/todo/list")
-
-	  /*return c.Render("todo/create", fiber.Map{
-		  "Page":          "Create Todo",
-		  "FromProtected": fromProtected,
-		  "UserID":        c.Locals("userId").(uint64),
-		  "Username":      c.Locals("username").(string),
-	  })*/
   })
+
+  log.Fatal(app.Listen(":9000"))
 }
