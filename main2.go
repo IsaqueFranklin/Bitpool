@@ -28,12 +28,13 @@ func main() {
   }) 
 
   app.Get("/", func(ctx *fiber.Ctx) error {
-    return ctx.SendString("Hello World.")
+    return ctx.Render("index", fiber.Map{})
   })
 
-  app.Get("/block", func(ctx *fiber.Ctx) error { 
+  app.Get("/blockinfo/:block", func(ctx *fiber.Ctx) error {
+    block := ctx.Params("block")
 
-    resp, err := http.Get("https://mempool.space/api/v1/mining/blocks/timestamp/1672531200")
+    resp, err := http.Get("https://mempool.space/api/v1/mining/blocks/timestamp/"+block)
 
     if err != nil {
       log.Fatalln(err)
@@ -57,6 +58,16 @@ func main() {
       "Hash": result.Hash,
       "Timestamp": result.Timestamp,
     })
+  })
+
+  app.Post("/block", func(ctx *fiber.Ctx) error {
+
+    time.Sleep(1 *time.Second)
+    block := ctx.FormValue("block")
+
+    fmt.Println(block)
+    
+    return ctx.Redirect("/blockinfo/"+block)
   })
 
  app.Post("/get-block", func(ctx *fiber.Ctx) error {
