@@ -75,32 +75,9 @@ func main() {
     time.Sleep(1 *time.Second)
     block := ctx.FormValue("block")
 
-    fmt.Println(block)
-
-    resp, err := http.Get("https://mempool.space/api/v1/mining/blocks/timestamp/"+block)
-
-    if err != nil {
-      log.Fatalln(err)
-    }
-
-    body, err := ioutil.ReadAll(resp.Body)
-    if err != nil {
-      log.Fatalln(err)
-    }
-
-    var result Response
-
-    if err := json.Unmarshal(body, &result); err != nil {
-      fmt.Println("Can not unmarshal JSON.")
-    }
-
-    fmt.Println(result) 
+    fmt.Println(block) 
     
-    return ctx.Render("index", fiber.Map{
-      "Height": result.Height,
-      "Hash": result.Hash,
-      "Timestamp": result.Timestamp,
-    })
+    return ctx.Redirect("/blockinfo/"+block)
  }) 
 
   log.Fatal(app.Listen(":9000"))
