@@ -61,16 +61,15 @@ func main() {
   })
 
   app.Post("/block", func(ctx *fiber.Ctx) error {
-
-    time.Sleep(1 *time.Second)
+ 
     block := ctx.FormValue("block")
 
     fmt.Println(block)
     
-    return ctx.Redirect("/blockinfo/"+block)
+    return nil
   })
 
- app.Post("/get-block", func(ctx *fiber.Ctx) error {
+ app.Get("/get-block", func(ctx *fiber.Ctx) error {
     
     time.Sleep(1 *time.Second)
     block := ctx.FormValue("block")

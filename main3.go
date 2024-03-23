@@ -39,16 +39,8 @@ func main(){
       fmt.Println("Can not unmarshal JSON.")
     }
 
-    fmt.Println(result)
-
-    films := map[string][]Response{
-     "Films": {
-        "Height": result.Height,
-        "Hash": result.Hash,
-        "Timestamp": result.Timestamp,
-     },    
-    }
-    tmpl.Execute(w, films)
+    fmt.Println(result)  
+    tmpl.Execute(w, result)
   }  
 
   h2 := func (w http.ResponseWriter, r *http.Request) {
