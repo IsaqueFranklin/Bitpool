@@ -8,11 +8,11 @@
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://unpkg.com/htmx.org@1.9.2" integrity="sha384-L6OqL9pRWyyFU3+/bjdSri+iIphTN/bvYyM37tICVyOJkWZLpP2vGn6VUEXgzg6h" crossorigin="anonymous"></script>
   </head>
-  <body class="mx-auto my-auto mt-8 md:mt-12 items-center max-w-5xl">
-   <div class="">
+  
+  <body class="mx-auto my-auto mt-8 md:mt-12 items-center max-w-5xl"> 
      <div>
       <h1>Information about an specific block</h1>
-        <form hx-post="/block/" htmx-indicator="#spinner">
+        <form hx-post="/block/" hx-swap="innerHTML" hx-target="#block" htmx-indicator="#spinner">
     
            <div class="">
              <h1 class="text-4xl font-normal">Specific Block Information:</h1>
@@ -24,24 +24,14 @@
 
            </div> 
         </form>
+
+{{ block "block" .}}
+   <div id="block" >
+     
+               
+   </div>
+{{ end }}
      </div>
-    <div class="" id="block">
-       <div class="mt-8">
-    <h1 class="text-2xl">Block Height: </h1>
-    <p class="font-light text-xl">{{ .Height }}</p>
-   </div> 
-
-   <div class="mt-8">
-    <h1 class="text-2xl">Block Hash: </h1>
-    <p class="font-light text-xl">{{ .Hash }}</p>
-   </div> 
-
-   <div class="mt-8">
-    <h1 class="text-2xl">Block Timestamp: </h1>
-    <p class="font-light text-xl">{{ .Timestamp }}</p>
-   </div> 
-
-    </div>
-   </div> 
   </body>
+  
 </html> 
