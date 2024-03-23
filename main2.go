@@ -61,7 +61,7 @@ func main() {
   })
 
   app.Post("/block", func(ctx *fiber.Ctx) error {
- 
+    time.Sleep(1 *time.Second)
     block := ctx.FormValue("block")
 
     fmt.Println(block)
@@ -85,7 +85,7 @@ func main() {
 
     fmt.Println(result) 
     
-    return ctx.Render("index2", fiber.Map{
+    return ctx.Render("comps/block", fiber.Map{
       "Height": result.Height,
       "Hash": result.Hash,
       "Timestamp": result.Timestamp,
