@@ -96,7 +96,11 @@ func main() {
       "USD": result.USD,
       "EUR": result.EUR,
     })
-  }) 
+  })
+
+  app.Get("/adjustment", func(ctx *fiber.Ctx) error {
+    return ctx.Render("comps/adjustment", fiber.Map{})
+  })
 
   log.Fatal(app.Listen(":9000"))
 }
