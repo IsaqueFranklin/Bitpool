@@ -17,6 +17,12 @@ type Response struct {
   Timestamp string `json:"timestamp"`
 }
 
+type Price struct {
+  Time int `json:"time"`
+  USD int `json:USD`
+  EUR int `json:EUR`
+}
+
 func main() {
 
   app := fiber.New(fiber.Config{
@@ -30,36 +36,7 @@ func main() {
   app.Get("/", func(ctx *fiber.Ctx) error {
     return ctx.Render("index", fiber.Map{})
   })
-
-  app.Get("/blockinfo/:block", func(ctx *fiber.Ctx) error {
-    block := ctx.Params("block")
-
-    resp, err := http.Get("https://mempool.space/api/v1/mining/blocks/timestamp/"+block)
-
-    if err != nil {
-      log.Fatalln(err)
-    }
-
-    body, err := ioutil.ReadAll(resp.Body)
-    if err != nil {
-      log.Fatalln(err)
-    }
-
-    var result Response
-
-    if err := json.Unmarshal(body, &result); err != nil {
-      fmt.Println("Can not unmarshal JSON.")
-    }
-
-    fmt.Println(result) 
-    
-    return ctx.Render("index", fiber.Map{
-      "Height": result.Height,
-      "Hash": result.Hash,
-      "Timestamp": result.Timestamp,
-    })
-  })
-
+ 
   app.Post("/block", func(ctx *fiber.Ctx) error {
     time.Sleep(1 *time.Second)
     block := ctx.FormValue("block")
@@ -92,15 +69,34 @@ func main() {
     })
   })
 
- app.Get("/get-block", func(ctx *fiber.Ctx) error {
-    
+  app.Post("/price", func(ctx *fiber.Ctx) error {
     time.Sleep(1 *time.Second)
-    block := ctx.FormValue("block")
-
-    fmt.Println(block) 
     
-    return ctx.Redirect("/blockinfo/"+block)
- }) 
+    resp, err := http.Get("https://mempool.space/api/v1/prices")
+
+    if err != nil {
+      log.Fatalln(err)
+    }
+
+    body, err := ioutil.ReadAll(resp.Body)
+    if err != nil {
+      log.Fatalln(err)
+    }
+
+    var result Price 
+
+    if err := json.Unmarshal(body, &result); err != nil {
+      fmt.Println("Cannot unmarshal JSON.")
+    }
+
+    fmt.Println(result)
+
+    return ctx.Render("comps/price", fiber.Map{
+      "Time": result.Time,
+      "USD": result.USD,
+      "EUR": result.EUR,
+    })
+  }) 
 
   log.Fatal(app.Listen(":9000"))
 }

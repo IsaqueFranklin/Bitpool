@@ -18,21 +18,20 @@
            <div class="">
              <h1 class="text-4xl font-normal">Specific Block Information:</h1>
             <input placeholder="What's the block?" type="text" name="block" class="py-2 px-3 mt-2 bg-gray-100 border border-gray-700 rounded-md" id="title" />
-          <button type="submit" class="py-2 px-3 bg-gray-700 text-white rounded-md mt-4 hover:bg-black">
+          <button id="spinner" type="submit" class="py-2 px-3 bg-gray-700 text-white rounded-md mt-4 hover:bg-black">
             <span class="spinner-border spinner-border-sm htmx-indicator" id="spinner" role="status" aria-hidden="true"></span>
             Get block now
           </button>
 
            </div> 
-        </form>
-
-{{ block "block" .}}
-   <div id="block" >
-     
-               
-   </div>
-{{ end }}
+        </form> 
      </div>
+     <div id="price">
+      
+     </div>
+     <form class="" hx-post="/price/" hx-swap="innerHTML" hx-target="#price" htmx-indicator="#spinner">
+      <button id="spinner" type="submit">Ver valor agora</button>
+     </form>
   </body>
   
 </html> 
