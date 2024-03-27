@@ -29,8 +29,15 @@
      <div id="price">
       
      </div>
+     <div id="adjust">
+      
+     </div>
      <form class="" hx-post="/price/" hx-swap="innerHTML" hx-target="#price" htmx-indicator="#spinner">
       <button id="spinner" type="submit">Ver valor agora</button>
+     </form>
+
+    <form class="" hx-post="/adjustment/" hx-swap="innerHTML" hx-target="#adjust" htmx-indicator="#spinner">
+      <button id="spinner" type="submit" class="bg-black text-white py-2 px-3 rounded-md" >Ajuste de dificuldade</button>
      </form>
   </body>
   

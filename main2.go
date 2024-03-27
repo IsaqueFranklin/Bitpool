@@ -23,6 +23,19 @@ type Price struct {
   EUR int `json:EUR`
 }
 
+type Adjustment struct {
+  ProgressPercent int `json:"progressPercent"`
+  DifficultyChange int `json:"difficultyChange"`
+  EstimatedRetargetDate int `json:"estimatedRetargetDate"`
+  RemainingBlocks int `json:"remainingBlocks"`
+  RemainingTime int `json:"remainingTime "`
+  PreviousRetarget int `json:"previousRetarget"`
+  NextRetargetHeight int `json:"nextRetargetHeight"`
+  TimeAvg int `json:"timeAvg"`
+  AdjustedTimeAvg int `json:"adjustedTimeAvg"`
+  TimeOffset int `json:"timeOffset"`
+}
+
 func main() {
 
   app := fiber.New(fiber.Config{
@@ -87,6 +100,7 @@ func main() {
 
     if err := json.Unmarshal(body, &result); err != nil {
       fmt.Println("Cannot unmarshal JSON.")
+      fmt.Println(err)
     }
 
     fmt.Println(result)
@@ -98,8 +112,31 @@ func main() {
     })
   })
 
-  app.Get("/adjustment", func(ctx *fiber.Ctx) error {
-    return ctx.Render("comps/adjustment", fiber.Map{})
+  app.Post("/adjustment", func(ctx *fiber.Ctx) error {
+    time.Sleep(1 *time.Second)
+
+    resp, err := http.Get("https://mempool.space/api/v1/difficulty-adjustment")
+
+    if err != nil {
+      log.Fatalln(err)
+    }
+
+    body, err := ioutil.ReadAll(resp.Body)
+    if err != nil {
+      log.Fatalln(err)
+    }
+
+    var result Adjustment 
+
+    if err := json.Unmarshal(body, &result); err != nil {
+      fmt.Println("Cannot unmarshal JSON.")
+    }
+
+    fmt.Println(result)
+
+    return ctx.Render("comps/adjustment", fiber.Map{
+      "Diff": result.DifficultyChange,
+    })
   })
 
   log.Fatal(app.Listen(":9000"))
