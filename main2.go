@@ -24,16 +24,16 @@ type Price struct {
 }
 
 type Adjustment struct {
-  ProgressPercent int `json:"progressPercent"`
-  DifficultyChange int `json:"difficultyChange"`
-  EstimatedRetargetDate int `json:"estimatedRetargetDate"`
-  RemainingBlocks int `json:"remainingBlocks"`
-  RemainingTime int `json:"remainingTime "`
-  PreviousRetarget int `json:"previousRetarget"`
-  NextRetargetHeight int `json:"nextRetargetHeight"`
-  TimeAvg int `json:"timeAvg"`
-  AdjustedTimeAvg int `json:"adjustedTimeAvg"`
-  TimeOffset int `json:"timeOffset"`
+  ProgressPercent float32 `json:"progressPercent"`
+  DifficultyChange float32 `json:"difficultyChange"`
+  EstimatedRetargetDate float32 `json:"estimatedRetargetDate"`
+  RemainingBlocks float32 `json:"remainingBlocks"`
+  RemainingTime float32 `json:"remainingTime "`
+  PreviousRetarget float32 `json:"previousRetarget"`
+  NextRetargetHeight float32 `json:"nextRetargetHeight"`
+  TimeAvg float32 `json:"timeAvg"`
+  AdjustedTimeAvg float32 `json:"adjustedTimeAvg"`
+  TimeOffset float32 `json:"timeOffset"`
 }
 
 func main() {
@@ -99,8 +99,7 @@ func main() {
     var result Price 
 
     if err := json.Unmarshal(body, &result); err != nil {
-      fmt.Println("Cannot unmarshal JSON.")
-      fmt.Println(err)
+      fmt.Println("Cannot unmarshal JSON.") 
     }
 
     fmt.Println(result)
@@ -130,6 +129,7 @@ func main() {
 
     if err := json.Unmarshal(body, &result); err != nil {
       fmt.Println("Cannot unmarshal JSON.")
+      fmt.Println(err)
     }
 
     fmt.Println(result)
