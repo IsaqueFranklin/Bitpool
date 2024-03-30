@@ -14,15 +14,15 @@
       <img class="mb-4 mx-auto flex max-w-64 max-h-64 items-center justify-center" src="https://cdn.icon-icons.com/icons2/2845/PNG/512/bitcoin_logo_icon_181258.png" alt="">
       <h1 class="text-3xl font-normal text-black">Welcome to the TimechainData.</h1>
     </div>
-     <div id="everything" class="mx-auto items-center justify-center my-auto">
+     <div id="everything" class="mx-auto items-center justify-center my-auto text-center">
 
       
       <form hx-post="/block/" hx-swap="innerHTML" hx-target="#everything" htmx-indicator="#spinner">
     
            <div class="">
-             <h1 class="text-4xl font-normal">Specific Block Information:</h1>
+             <h1 class="text-xl font-light">Specific Block Information:</h1>
             <input placeholder="What's the block?" type="text" name="block" class="py-2 px-3 mt-2 bg-gray-100 border border-gray-700 rounded-md" id="title" />
-          <button id="spinner" type="submit" class="py-2 px-3 bg-gray-700 text-white rounded-md mt-4 hover:bg-black">
+          <button id="spinner" type="submit" class="py-2 px-3 hover:bg-gray-700 text-white rounded-md mt-4 bg-black">
             <span class="spinner-border spinner-border-sm htmx-indicator" id="spinner" role="status" aria-hidden="true"></span>
             Get block now
           </button>
@@ -36,13 +36,15 @@
      <div id="adjust">
       
      </div>
-     <form class="" hx-post="/price/" hx-swap="innerHTML" hx-target="#price" htmx-indicator="#spinner">
-      <button id="spinner" type="submit">Ver valor agora</button>
-     </form>
+    <div class="mx-auto my-auto items-center justify-center text-center">
+      <form class="" hx-post="/price/" hx-swap="innerHTML" hx-target="#price" htmx-indicator="#spinner">
+        <button id="spinner" type="submit">Ver valor agora</button>
+      </form>
 
-    <form class="" hx-post="/adjustment/" hx-swap="innerHTML" hx-target="#adjust" htmx-indicator="#spinner">
-      <button id="spinner" type="submit" class="bg-black text-white py-2 px-3 rounded-md" >Ajuste de dificuldade</button>
-     </form>
+      <form class="" hx-post="/adjustment/" hx-swap="innerHTML" hx-target="#adjust" htmx-indicator="#spinner">
+        <button id="spinner" type="submit" class="bg-black text-white py-2 px-3 rounded-md" >Ajuste de dificuldade</button>
+      </form>
+    </div> 
   </body>
   
 </html> 
