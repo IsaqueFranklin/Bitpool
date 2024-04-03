@@ -20,7 +20,7 @@
       <form hx-post="/block/" hx-swap="innerHTML" hx-target="#everything" htmx-indicator="#spinner">
     
            <div class="">
-             <h1 class="text-xl font-light">Specific Block Information:</h1>
+             <h1 class="text-2xl font-light">Get specific Block Information:</h1>
             <input placeholder="What's the block?" type="text" name="block" class="py-2 px-3 mt-2 bg-gray-100 border border-gray-700 rounded-md" id="title" />
           <button id="spinner" type="submit" class="py-2 px-3 hover:bg-gray-700 text-white rounded-md mt-4 bg-black">
             <span class="spinner-border spinner-border-sm htmx-indicator" id="spinner" role="status" aria-hidden="true"></span>
@@ -36,12 +36,12 @@
      <div id="adjust">
       
      </div>
-    <div class="mx-auto my-auto items-center justify-center text-center">
-      <form class="" hx-post="/price/" hx-swap="innerHTML" hx-target="#price" htmx-indicator="#spinner">
-        <button id="spinner" type="submit">Ver valor agora</button>
+    <div class="flex mx-auto my-auto items-center justify-center text-center">
+      <form class="mt-4 mx-2" hx-post="/price/" hx-swap="innerHTML" hx-target="#price" htmx-indicator="#spinner">
+        <button id="spinner" type="submit" class="bg-black text-white py-2 px-3 rounded-md">Ver valor agora</button>
       </form>
 
-      <form class="" hx-post="/adjustment/" hx-swap="innerHTML" hx-target="#adjust" htmx-indicator="#spinner">
+      <form class="mt-4 mx-2" hx-post="/adjustment/" hx-swap="innerHTML" hx-target="#adjust" htmx-indicator="#spinner">
         <button id="spinner" type="submit" class="bg-black text-white py-2 px-3 rounded-md" >Ajuste de dificuldade</button>
       </form>
     </div> 
