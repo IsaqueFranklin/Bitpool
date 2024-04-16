@@ -167,5 +167,32 @@ func main() {
     })
   })
 
+  app.Post("/tip-hash", func(ctx *fiber.Ctx) error {
+    time.Sleep(1 *time.Second)
+
+    resp, err := http.Get("https://mempool.space/api/blocks/tip/hash")
+    if err != nil {
+      log.Fatalln(err)
+    }
+
+    body, err := ioutil.ReadAll(resp.Body)
+    if err != nil {
+      log.Fatalln(err)
+    }
+
+    var result int
+
+    if err := json.Unmarshal(body, &result); err != nil {
+      fmt.Println("Cannot unmarshal JSON.")
+      fmt.Println(err)
+    }
+
+    fmt.Println(result)
+
+    return ctx.Render("comps/tip-hash", fiber.Map{
+      "Hash": result,
+    })
+  })
+
   log.Fatal(app.Listen(":9000"))
 }
