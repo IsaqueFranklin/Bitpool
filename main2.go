@@ -153,10 +153,17 @@ func main() {
       log.Fatalln(err)
     }
 
-    fmt.Println(body)
+    var result int
 
-    return Ctx.Render("comps/height", fiber.map{
-      "Height": body,
+    if err := json.Unmarshal(body, &result); err != nil {
+      fmt.Println("Cannot unmarshal JSON.")
+      fmt.Println(err)
+    }
+
+    fmt.Println(result)
+
+    return ctx.Render("comps/height", fiber.Map{
+      "Height": result,
     })
   })
 
