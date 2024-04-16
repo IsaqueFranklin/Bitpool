@@ -43,6 +43,10 @@
       <form class="mt-4 mx-2" hx-post="/height/" hx-swap="innerHTML" hx-target="#height" htmx-indicator="#spinner">
         <button id="spinner" type="submit" class="bg-black text-white py-2 px-3 rounded-md hover:bg-gray-700" >Altura da Timechain</button>
       </form>
+
+      <form class="mt-4 mx-2" hx-post="/tip-hash/" hx-swap="innerHTML" hx-target="#hash" htmx-indicator="#spinner">
+        <button id="spinner" type="submit" class="bg-black text-white py-2 px-3 rounded-md hover:bg-gray-700" >Hash do último bloco da Timechain</button>
+      </form>
     </div>
 
     <div id="price">
@@ -53,6 +57,10 @@
      </div>
 
      <div id="height">
+      
+     </div>
+
+     <div id="hash">
       
      </div>
   </body>
