@@ -139,5 +139,26 @@ func main() {
     })
   })
 
+  app.Post("/height", func(ctx *fiber.Ctx) error {
+    time.Sleep(1 *time.Second)
+
+    resp, err := http.Get("https://mempool.space/api/blocks/tip/height")
+
+    if err != nil {
+      log.Fatalln(err)
+    }
+
+    body, err := ioutil.ReadAll(resp.Body)
+    if err != nil {
+      log.Fatalln(err)
+    }
+
+    fmt.Println(body)
+
+    return Ctx.Render("comps/height", fiber.map{
+      "Height": body,
+    })
+  })
+
   log.Fatal(app.Listen(":9000"))
 }
