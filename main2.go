@@ -180,7 +180,7 @@ func main() {
       log.Fatalln(err)
     }
 
-    var result int
+    var result string
 
     if err := json.Unmarshal(body, &result); err != nil {
       fmt.Println("Cannot unmarshal JSON.")
@@ -192,6 +192,17 @@ func main() {
     return ctx.Render("comps/tip-hash", fiber.Map{
       "Hash": result,
     })
+  })
+
+  app.Post("/transaction", func(ctx *fiber.Ctx) error {
+    time.Sleep(1 *time.Second)
+
+    adress := ctx.FormValue("block")
+
+    resp1, err := http.Get("")
+    if err != nil {
+      log.Fatalln(err)
+    }
   })
 
   log.Fatal(app.Listen(":9000"))
