@@ -237,6 +237,8 @@ func main() {
       log.Fatalln(err)
     }
 
+    var resAG GeneralAddress
+
     addressTransactions, err := http.Get("https://mempool.space/api/address/"+address+"/txs")
     if err != nil {
       log.Fatalln(err)
@@ -247,7 +249,9 @@ func main() {
       log.Fatalln(err)
     }
 
-    addressTransaChain, err := http.Get(("https://mempool.space/api/address/"+address+"/txs/chain")
+    var resAT TransactionsAddress
+
+    addressTransaChain, err := http.Get("https://mempool.space/api/address/"+address+"/txs/chain")
     if err != nil {
       log.Fatalln(err)
     }
@@ -257,7 +261,9 @@ func main() {
       log.Fatalln(err)
     }
 
-    addressTransaMempool, err := http.Get(("https://mempool.space/api/address/"+address+"/txs/mempool")
+    var resATC TransactionsChainAddress
+
+    addressTransaMempool, err := http.Get("https://mempool.space/api/address/"+address+"/txs/mempool")
     if err != nil {
       log.Fatalln(err)
     }
@@ -266,6 +272,8 @@ func main() {
     if err != nil {
       log.Fatalln(err)
     }
+
+    var resATM TransactionsMempoolAddress
 
     addressUtxo, err := http.Get("https://mempool.space/api/address/"+address+"/utxo")
     if err != nil {
@@ -277,15 +285,23 @@ func main() {
       log.Fatalln(err)
     }
 
+    var resAutxo UtxoAddress
+
     addressValidation, err := http.Get("https://mempool.space/api/v1/validate-address/"+address)
     if err != nil {
       log.Fatalln(err)
     }
 
-    avbody, err := ioutil.ReadAll(adressValidation.Body)
+    avbody, err := ioutil.ReadAll(addressValidation.Body)
     if err != nil {
       log.Fatalln(err)
     }
+
+    var resAV ValidationAddress
+
+    return ctx.Render("comps/adressInfo", fiber.Map{
+
+    })
   })
 
   log.Fatal(app.Listen(":9000"))
