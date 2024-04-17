@@ -197,9 +197,34 @@ func main() {
   app.Post("/transaction", func(ctx *fiber.Ctx) error {
     time.Sleep(1 *time.Second)
 
-    adress := ctx.FormValue("block")
+    adress := ctx.FormValue("adress")
 
-    resp1, err := http.Get("")
+    adressGeneral, err := http.Get("https://mempool.space/api/address/"+adress)
+    if err != nil {
+      log.Fatalln(err)
+    }
+
+    adressTransactions, err := http.Get("https://mempool.space/api/address/"+adress+"/txs")
+    if err != nil {
+      log.Fatalln(err)
+    }
+
+    adressTransaChain, err := http.Get(("https://mempool.space/api/address/"+adress+"/txs/chain")
+    if err != nil {
+      log.Fatalln(err)
+    }
+
+    adressTransaMempool, err := http.Get(("https://mempool.space/api/address/"+adress+"/txs/mempool")
+    if err != nil {
+      log.Fatalln(err)
+    }
+
+    adressUtxo, err := http.Get("https://mempool.space/api/address/"+adress+"/utxo")
+    if err != nil {
+      log.Fatalln(err)
+    }
+
+    adressValidation, err := http.Get("https://mempool.space/api/v1/validate-address/"+adress)
     if err != nil {
       log.Fatalln(err)
     }
