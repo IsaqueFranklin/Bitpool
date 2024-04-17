@@ -11,6 +11,8 @@ import (
   "github.com/gofiber/fiber/v2"
 )
 
+
+//Stucts usadas para código
 type Response struct {
   Height int `json:"height"`
   Hash string `json:"hash"`
@@ -35,6 +37,32 @@ type Adjustment struct {
   AdjustedTimeAvg float32 `json:"adjustedTimeAvg"`
   TimeOffset float32 `json:"timeOffset"`
 }
+
+type GeneralAddress struct {
+
+}
+
+type TransactionsAddress struct {
+
+}
+
+type TransactionsChainAddress struct {
+
+}
+
+type TransactionsMempoolAddress struct {
+
+}
+
+type UtxoAddress struct {
+
+}
+
+type ValidationAddress struct {
+
+}
+
+
 
 func main() {
 
@@ -194,37 +222,67 @@ func main() {
     })
   })
 
-  app.Post("/transaction", func(ctx *fiber.Ctx) error {
+  app.Post("/get-address", func(ctx *fiber.Ctx) error {
     time.Sleep(1 *time.Second)
 
-    adress := ctx.FormValue("adress")
+    address := ctx.FormValue("address")
 
-    adressGeneral, err := http.Get("https://mempool.space/api/address/"+adress)
+    addressGeneral, err := http.Get("https://mempool.space/api/address/"+address)
     if err != nil {
       log.Fatalln(err)
     }
 
-    adressTransactions, err := http.Get("https://mempool.space/api/address/"+adress+"/txs")
+    agbody, err := ioutil.ReadAll(addressGeneral.Body)
     if err != nil {
       log.Fatalln(err)
     }
 
-    adressTransaChain, err := http.Get(("https://mempool.space/api/address/"+adress+"/txs/chain")
+    addressTransactions, err := http.Get("https://mempool.space/api/address/"+address+"/txs")
     if err != nil {
       log.Fatalln(err)
     }
 
-    adressTransaMempool, err := http.Get(("https://mempool.space/api/address/"+adress+"/txs/mempool")
+    atbody, err := ioutil.ReadAll(addressTransactions.Body)
     if err != nil {
       log.Fatalln(err)
     }
 
-    adressUtxo, err := http.Get("https://mempool.space/api/address/"+adress+"/utxo")
+    addressTransaChain, err := http.Get(("https://mempool.space/api/address/"+address+"/txs/chain")
     if err != nil {
       log.Fatalln(err)
     }
 
-    adressValidation, err := http.Get("https://mempool.space/api/v1/validate-address/"+adress)
+    atcbody, err := ioutil.ReadAll(addressTransaChain.Body)
+    if err != nil {
+      log.Fatalln(err)
+    }
+
+    addressTransaMempool, err := http.Get(("https://mempool.space/api/address/"+address+"/txs/mempool")
+    if err != nil {
+      log.Fatalln(err)
+    }
+
+    atnbody, err := ioutil.ReadAll(addressTransaMempool.Body)
+    if err != nil {
+      log.Fatalln(err)
+    }
+
+    addressUtxo, err := http.Get("https://mempool.space/api/address/"+address+"/utxo")
+    if err != nil {
+      log.Fatalln(err)
+    }
+
+    aubody, err := ioutil.ReadAll(addressUtxo.Body)
+    if err != nil {
+      log.Fatalln(err)
+    }
+
+    addressValidation, err := http.Get("https://mempool.space/api/v1/validate-address/"+address)
+    if err != nil {
+      log.Fatalln(err)
+    }
+
+    avbody, err := ioutil.ReadAll(adressValidation.Body)
     if err != nil {
       log.Fatalln(err)
     }
