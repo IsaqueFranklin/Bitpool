@@ -38,7 +38,7 @@ type Adjustment struct {
   TimeOffset float32 `json:"timeOffset"`
 }
 
-type GeneralAddress struct {
+/*type GeneralAddress struct {
 
 }
 
@@ -60,7 +60,7 @@ type UtxoAddress struct {
 
 type ValidationAddress struct {
 
-}
+}*/
 
 
 
@@ -208,12 +208,16 @@ func main() {
       log.Fatalln(err)
     }
 
-    var result string
+    stringfiedJson := string(body)
+    fmt.Println(stringfiedJson)
 
-    if err := json.Unmarshal(body, &result); err != nil {
+    var result *string 
+    result = &stringfiedJson
+
+    /*if err := json.Unmarshal([]byte(stringfiedJson), &result); err != nil {
       fmt.Println("Cannot unmarshal JSON.")
       fmt.Println(err)
-    }
+    }*/     
 
     fmt.Println(result)
 
@@ -222,7 +226,7 @@ func main() {
     })
   })
 
-  app.Post("/get-address", func(ctx *fiber.Ctx) error {
+  /*app.Post("/get-address", func(ctx *fiber.Ctx) error {
     time.Sleep(1 *time.Second)
 
     address := ctx.FormValue("address")
@@ -302,7 +306,7 @@ func main() {
     return ctx.Render("comps/adressInfo", fiber.Map{
 
     })
-  })
+  })*/
 
   log.Fatal(app.Listen(":9000"))
 }
